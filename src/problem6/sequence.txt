@@ -1,0 +1,42 @@
+title 99tech Live Score
+==Authentication==#lightgreen
+User->Website: Access
+User->Website: Login
+Website->API: Send Login Request
+API->Database: Fetch Username
+Database-->API:User Info
+API->API: Verify User Info
+API-->Website: JWT Token
+
+==Solution 1: Interval Query==#lightgreen
+User->Website: Access Leaderboards
+Website->API: Interval Request Live Score
+API->Caching: Get Leaderboards Data
+Caching-->API: Data
+API->API: Check if not have data
+API->Database: Query Leaderboards Data
+Database-->API: Data
+API->Caching: Cache data
+API-->Website: Leaderboards data
+
+==Solution 2: Websocket==#yellow
+User->Website: Access Leaderboards
+Website->API: Subscribe Websocket
+API->Caching: Get Leaderboards Data
+Caching-->API: Data
+API->API: Check if not have data
+API->Database: Query Leaderboards Data
+Database-->API: Data
+API->Caching: Cache data
+API-->Website: Notify whenever data has changed
+
+==Update data==#lightgreen
+User->Website: Click submit data
+Website->API: send submit request
+API->API: Verify Authentication and Submit data
+API-->Website: If not return error
+API->Database: Update data
+Database-->API:
+API->Caching: Cache new data
+API-->Website: Success Result
+Website->Website: Update Leaderboard
